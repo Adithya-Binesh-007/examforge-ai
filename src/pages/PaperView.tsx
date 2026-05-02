@@ -105,7 +105,7 @@ export default function PaperView() {
       return m ? { number: m[1], answer: m[2] } : { number: i + 1, answer: line };
     });
     const { error } = await supabase.from("generated_papers")
-      .update({ question_paper: newPaper, answer_key: newAnswers })
+      .update({ question_paper: newPaper as any, answer_key: newAnswers as any })
       .eq("id", row.id);
     setSaving(false);
     if (error) return toast.error(error.message);
