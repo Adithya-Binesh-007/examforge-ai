@@ -144,8 +144,8 @@ export default function Generate() {
           exam_type: examType,
           difficulty,
           marks: Number(totalMarks) || null,
-          question_paper: paper,
-          answer_key: answerKey,
+          question_paper: paper as any,
+          answer_key: answerKey as any,
         })
         .select("id")
         .single();
