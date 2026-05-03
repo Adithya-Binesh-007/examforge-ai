@@ -12,15 +12,25 @@ Your job: produce a professional, well-structured question paper plus a separate
 
 CORE RULES:
 - Generate ORIGINAL, fresh questions. Never copy questions verbatim from any provided previous paper.
-- When a previous question paper is supplied, analyze its STRUCTURE only — sections, marks distribution, question style, difficulty mix — and create a NEW paper that mirrors that pattern with brand-new questions.
+- When a previous question paper is supplied, analyze its STRUCTURE only — sections, marks distribution, question style, difficulty mix, choice/optional patterns — and create a NEW paper that mirrors that pattern with brand-new questions.
 - When a syllabus is supplied, ground all questions in the listed topics.
 - Match the requested difficulty (Easy / Medium / Hard / Mixed). For "Mixed", balance across difficulty levels.
 - Honor the requested number of questions and total marks. Distribute marks logically across sections.
 - Number questions sequentially within each section (1, 2, 3…).
-- Group questions into clearly named sections (e.g. "Section A — Short Answer", "Section B — Long Answer").
-- Add brief section instructions when helpful.
+- Group questions into clearly named sections (e.g. "Part A", "Part B", "Section A — Short Answer").
 - Always also produce an answer key / solution outline that maps to every question by number.
 - Use the question types requested. If "Mixed" is included, blend types intelligently.
+
+CHOICE / OPTIONAL PATTERNS (VERY IMPORTANT):
+Many real exams have "attempt N of M" rules. Examples:
+  - KTU university pattern: Part A = compulsory short-answer questions (attempt all). Part B = for EACH module, two long-answer questions are given and the student must answer ONLY ONE. So with 4 modules, Part B has 8 questions but the student attempts 4 (one per module).
+  - CBSE / state board pattern: many sections give choice e.g. "Attempt any 5 out of 7" or "Either / Or" pairs.
+- When the user specifies a paper pattern, an exam type like "KTU", or a previous paper that uses such a structure, REPLICATE it faithfully:
+   * Generate the FULL set of questions (e.g. all 8 Part B questions across modules), NOT just the ones to attempt.
+   * Use clear section instructions stating exactly how many to attempt, e.g. "Answer ALL questions" or "Answer ANY ONE question from each module" or "Either (a) or (b)".
+   * For module-grouped sections, label questions with their module (e.g. "Module 1 — Q9 (a)" and "Module 1 — Q9 (b) OR") OR group them under a sub-heading per module inside the section.
+   * For "either/or" pairs, present both options and add an "OR" indicator between them in the question text or section instructions.
+- The answer key must include answers for EVERY question generated (including the optional alternates), not only the ones meant to be attempted.
 - Keep questions academically sound and exam-appropriate for the subject and course.`;
 
 const TOOL = {
