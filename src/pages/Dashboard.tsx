@@ -155,30 +155,6 @@ export default function Dashboard() {
           )}
         </section>
 
-        {/* About the developer */}
-        <section className="mb-10">
-          <div className="glass rounded-3xl p-8 md:p-10 gradient-border relative overflow-hidden">
-            <GlowOrb className="-bottom-20 -right-20" color="violet" size={300} />
-            <div className="relative flex flex-col md:flex-row items-start gap-6">
-              <div className="h-20 w-20 rounded-2xl bg-gradient-primary flex items-center justify-center text-white text-2xl font-bold font-display shadow-glow shrink-0">
-                AB
-              </div>
-              <div className="flex-1">
-                <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">About the Developer</p>
-                <h3 className="font-display text-2xl font-bold mb-1">Adithya Binesh</h3>
-                <p className="text-sm gradient-text font-medium mb-3">Student Developer & Founder of ExamForge AI</p>
-                <p className="text-muted-foreground max-w-2xl">
-                  Adithya Binesh is a student developer passionate about building AI-powered tools that help students and educators save time, prepare better, and create smarter learning resources.
-                </p>
-                <Button asChild className="mt-5 btn-gradient text-white border-0">
-                  <a href="https://www.linkedin.com/in/adithya-binesh-631270388/" target="_blank" rel="noopener noreferrer">
-                    <Linkedin className="mr-2 h-4 w-4" /> Connect on LinkedIn
-                  </a>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
 
       <Footer />
