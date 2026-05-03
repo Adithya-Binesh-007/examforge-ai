@@ -224,6 +224,8 @@ export default function Generate() {
                     <SelectItem value="Internal Exam">Internal Exam</SelectItem>
                     <SelectItem value="Model Exam">Model Exam</SelectItem>
                     <SelectItem value="Final Exam">Final Exam</SelectItem>
+                    <SelectItem value="KTU University Exam">KTU University Exam (Part A + Part B with module choice)</SelectItem>
+                    <SelectItem value="CBSE Board Exam">CBSE / Board Exam (with internal choice)</SelectItem>
                     <SelectItem value="Custom Pattern">Custom Pattern</SelectItem>
                   </SelectContent>
                 </Select>
