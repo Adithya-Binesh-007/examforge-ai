@@ -273,7 +273,22 @@ export default function Generate() {
           {(mode === "syllabus" || mode === "syllabus_previous") && (
             <div className="glass rounded-2xl p-6">
               <h2 className="font-display text-lg font-semibold mb-4">Syllabus {mode === "syllabus" && <span className="text-destructive">*</span>}</h2>
-              <Textarea rows={6} value={syllabus} onChange={(e) => setSyllabus(e.target.value)} placeholder="Paste your syllabus, topic list, or chapter outline here…" />
+              <Textarea rows={6} value={syllabus} onChange={(e) => setSyllabus(e.target.value)} placeholder="Paste your syllabus, or upload a PDF / image below…" />
+              <div className="mt-3 flex items-center gap-3">
+                <label className="cursor-pointer">
+                  <input type="file" accept="application/pdf,image/*" onChange={handleUpload("syllabus")} className="hidden" />
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-secondary/50 text-sm hover:bg-secondary transition-colors">
+                    {ocrLoading === "syllabus" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                    {ocrLoading === "syllabus" ? "Extracting…" : "Upload syllabus PDF or image"}
+                  </span>
+                </label>
+                {syllabusFileName && ocrLoading !== "syllabus" && (
+                  <span className="text-xs text-muted-foreground flex items-center gap-2">
+                    <span>{syllabusFileName}</span>
+                    <button onClick={() => { setSyllabusFileName(null); setSyllabus(""); }}><X className="h-3 w-3" /></button>
+                  </span>
+                )}
+              </div>
             </div>
           )}
 
@@ -283,13 +298,13 @@ export default function Generate() {
               <Textarea rows={6} value={previousPaper} onChange={(e) => setPreviousPaper(e.target.value)} placeholder="Paste a previous paper here, or upload a PDF / image below…" />
               <div className="mt-3 flex items-center gap-3">
                 <label className="cursor-pointer">
-                  <input type="file" accept="application/pdf,image/*" onChange={handleUpload} className="hidden" />
+                  <input type="file" accept="application/pdf,image/*" onChange={handleUpload("previous")} className="hidden" />
                   <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-secondary/50 text-sm hover:bg-secondary transition-colors">
-                    {ocrLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-                    {ocrLoading ? "Extracting…" : "Upload PDF or image"}
+                    {ocrLoading === "previous" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                    {ocrLoading === "previous" ? "Extracting…" : "Upload PDF or image"}
                   </span>
                 </label>
-                {ocrFileName && !ocrLoading && (
+                {ocrFileName && ocrLoading !== "previous" && (
                   <span className="text-xs text-muted-foreground flex items-center gap-2">
                     <span>{ocrFileName}</span>
                     <button onClick={() => { setOcrFileName(null); setPreviousPaper(""); }}><X className="h-3 w-3" /></button>
