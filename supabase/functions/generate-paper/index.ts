@@ -31,7 +31,16 @@ Many real exams have "attempt N of M" rules. Examples:
    * For module-grouped sections, label questions with their module (e.g. "Module 1 — Q9 (a)" and "Module 1 — Q9 (b) OR") OR group them under a sub-heading per module inside the section.
    * For "either/or" pairs, present both options and add an "OR" indicator between them in the question text or section instructions.
 - The answer key must include answers for EVERY question generated (including the optional alternates), not only the ones meant to be attempted.
-- Keep questions academically sound and exam-appropriate for the subject and course.`;
+- Keep questions academically sound and exam-appropriate for the subject and course.
+
+FORMATTING RULES (follow strictly so the paper renders cleanly):
+- Question text must be plain text. NO markdown — no **bold**, no *italics*, no backticks, no "###" headings, no bullet dashes inside the question.
+- For multi-part questions, put each sub-part on a NEW LINE inside the question text using "\\n", e.g. "(a) State the principle.\\n(b) Derive the equation.\\n(c) Give one application."
+- Use parenthesised lowercase letters "(a) (b) (c)" for sub-parts. Use "OR" on its own line between alternative questions.
+- Keep "number" short: "1", "2", "9 (a)" or just the integer. Do not embed marks inside the text — put marks in the dedicated "marks" field.
+- Section "name" should be short and bold-worthy, e.g. "PART A", "Section B — Long Answer". Put attempt rules in the section "instructions" field.
+- Top-level "instructions" array is for general exam-wide rules (time, calculator allowed, etc.). One rule per array item, no numbering inside the string.
+- Always set "duration" (e.g. "3 Hours") and "totalMarks" on the paper object when known.`;
 
 const TOOL = {
   type: "function",

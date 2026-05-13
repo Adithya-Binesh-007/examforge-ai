@@ -16,103 +16,201 @@ export interface AnswerItem { number: string | number; answer: string }
 const PAGE_W = 210;
 const PAGE_H = 297;
 const MARGIN = 18;
+const CONTENT_W = PAGE_W - 2 * MARGIN;
 
-function checkPage(doc: jsPDF, y: number, needed = 10): number {
-  if (y + needed > PAGE_H - MARGIN) {
+function ensureSpace(doc: jsPDF, y: number, needed: number): number {
+  if (y + needed > PAGE_H - MARGIN - 8) {
     doc.addPage();
     return MARGIN;
   }
   return y;
 }
 
-function wrapText(doc: jsPDF, text: string, maxWidth: number): string[] {
-  return doc.splitTextToSize(text, maxWidth);
+function wrap(doc: jsPDF, text: string, maxWidth: number): string[] {
+  return doc.splitTextToSize(text || "", maxWidth);
+}
+
+// Normalise leading whitespace and clean stray markdown markers from AI output.
+function clean(text: string): string {
+  return (text || "")
+    .replace(/\*\*/g, "")
+    .replace(/^\s+|\s+$/g, "")
+    .replace(/\s+\n/g, "\n");
 }
 
 export function downloadPaperPdf(paper: QuestionPaper, answerKey?: AnswerItem[]) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   let y = MARGIN;
 
-  // Title
+  // ===== Header block =====
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(18);
-  doc.text(paper.title || "Question Paper", PAGE_W / 2, y, { align: "center" });
-  y += 8;
+  doc.setFontSize(16);
+  const titleLines = wrap(doc, paper.title || "Question Paper", CONTENT_W);
+  for (const line of titleLines) {
+    doc.text(line, PAGE_W / 2, y, { align: "center" });
+    y += 7;
+  }
+  y += 1;
 
-  // Sub-header
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(11);
-  const meta: string[] = [];
-  if (paper.subject) meta.push(`Subject: ${paper.subject}`);
-  if (paper.course) meta.push(`Course: ${paper.course}`);
-  if (meta.length) { doc.text(meta.join("   |   "), PAGE_W / 2, y, { align: "center" }); y += 6; }
-  const meta2: string[] = [];
-  if (paper.duration) meta2.push(`Time: ${paper.duration}`);
-  if (paper.totalMarks) meta2.push(`Max Marks: ${paper.totalMarks}`);
-  if (meta2.length) { doc.text(meta2.join("   |   "), PAGE_W / 2, y, { align: "center" }); y += 8; }
+  doc.setFontSize(10.5);
+  const top: string[] = [];
+  if (paper.course) top.push(paper.course);
+  if (paper.subject) top.push(paper.subject);
+  if (top.length) { doc.text(top.join("   |   "), PAGE_W / 2, y, { align: "center" }); y += 5; }
 
-  doc.setDrawColor(180); doc.line(MARGIN, y, PAGE_W - MARGIN, y); y += 6;
+  const bottom: string[] = [];
+  if (paper.duration) bottom.push(`Time: ${paper.duration}`);
+  if (paper.totalMarks) bottom.push(`Maximum Marks: ${paper.totalMarks}`);
+  if (bottom.length) { doc.text(bottom.join("   |   "), PAGE_W / 2, y, { align: "center" }); y += 5; }
 
+  y += 2;
+  doc.setDrawColor(60); doc.setLineWidth(0.4);
+  doc.line(MARGIN, y, PAGE_W - MARGIN, y);
+  y += 6;
+
+  // ===== General instructions =====
   if (paper.instructions?.length) {
     doc.setFont("helvetica", "bold"); doc.setFontSize(11);
-    doc.text("Instructions:", MARGIN, y); y += 5;
+    y = ensureSpace(doc, y, 8);
+    doc.text("General Instructions", MARGIN, y); y += 5;
     doc.setFont("helvetica", "normal"); doc.setFontSize(10);
+    let idx = 1;
     for (const ins of paper.instructions) {
-      const lines = wrapText(doc, `• ${ins}`, PAGE_W - 2 * MARGIN);
-      for (const l of lines) { y = checkPage(doc, y); doc.text(l, MARGIN, y); y += 5; }
+      const prefix = `${idx}. `;
+      const lines = wrap(doc, prefix + clean(ins), CONTENT_W - 4);
+      y = ensureSpace(doc, y, lines.length * 4.6 + 1);
+      for (let i = 0; i < lines.length; i++) {
+        doc.text(lines[i], MARGIN + 2, y);
+        y += 4.6;
+      }
+      idx++;
     }
     y += 3;
+    doc.setDrawColor(180); doc.setLineWidth(0.2);
+    doc.line(MARGIN, y, PAGE_W - MARGIN, y);
+    y += 5;
   }
 
-  // Sections
+  // ===== Sections =====
   for (const section of paper.sections) {
-    y = checkPage(doc, y, 14);
-    doc.setFont("helvetica", "bold"); doc.setFontSize(13);
-    doc.text(section.name, MARGIN, y); y += 6;
+    y = ensureSpace(doc, y, 16);
+
+    // Section heading
+    doc.setFont("helvetica", "bold"); doc.setFontSize(12.5);
+    const name = (section.name || "").toUpperCase();
+    doc.text(name, PAGE_W / 2, y, { align: "center" });
+    y += 5;
+
     if (section.instructions) {
-      doc.setFont("helvetica", "italic"); doc.setFontSize(10);
-      const lines = wrapText(doc, section.instructions, PAGE_W - 2 * MARGIN);
-      for (const l of lines) { y = checkPage(doc, y); doc.text(l, MARGIN, y); y += 5; }
-      y += 1;
+      doc.setFont("helvetica", "italic"); doc.setFontSize(9.5);
+      const lines = wrap(doc, `(${clean(section.instructions)})`, CONTENT_W);
+      for (const l of lines) {
+        y = ensureSpace(doc, y, 4.4);
+        doc.text(l, PAGE_W / 2, y, { align: "center" });
+        y += 4.4;
+      }
     }
-    doc.setFont("helvetica", "normal"); doc.setFontSize(11);
+    y += 3;
+    doc.setDrawColor(200); doc.setLineWidth(0.15);
+    doc.line(MARGIN + 30, y, PAGE_W - MARGIN - 30, y);
+    y += 5;
+
+    // Questions
+    doc.setFontSize(10.8);
     for (const q of section.questions) {
-      const marks = q.marks ? `[${q.marks}]` : "";
-      const prefix = `${q.number}. `;
-      const textWidth = PAGE_W - 2 * MARGIN - 14;
-      const lines = wrapText(doc, prefix + q.text, textWidth);
-      y = checkPage(doc, y, lines.length * 5 + 2);
-      for (let i = 0; i < lines.length; i++) {
-        doc.text(lines[i], MARGIN, y);
-        if (i === 0 && marks) doc.text(marks, PAGE_W - MARGIN, y, { align: "right" });
+      const numStr = `${q.number}.`;
+      const marksStr = q.marks ? `[${q.marks}]` : "";
+      const marksW = marksStr ? doc.getTextWidth(marksStr) + 2 : 0;
+      const numW = 10; // reserved width for "12."
+      const textW = CONTENT_W - numW - marksW - 2;
+
+      const cleaned = clean(q.text).replace(/\s*\n\s*/g, "\n");
+      // Split by newlines first so sub-parts (a) (b) keep on their own lines
+      const paragraphs = cleaned.split("\n").filter((p) => p.trim().length > 0);
+      const allLines: string[] = [];
+      paragraphs.forEach((p, pi) => {
+        const wrapped = wrap(doc, p, textW);
+        allLines.push(...wrapped);
+        if (pi < paragraphs.length - 1) allLines.push("");
+      });
+
+      const blockHeight = allLines.length * 5 + 2;
+      y = ensureSpace(doc, y, blockHeight);
+
+      // Number
+      doc.setFont("helvetica", "bold");
+      doc.text(numStr, MARGIN, y);
+      // First line text
+      doc.setFont("helvetica", "normal");
+      for (let i = 0; i < allLines.length; i++) {
+        if (allLines[i] !== "") doc.text(allLines[i], MARGIN + numW, y);
+        if (i === 0 && marksStr) {
+          doc.setFont("helvetica", "bold");
+          doc.text(marksStr, PAGE_W - MARGIN, y, { align: "right" });
+          doc.setFont("helvetica", "normal");
+        }
         y += 5;
       }
-      y += 2;
+      y += 1.5;
     }
     y += 4;
   }
 
-  // Page numbers
+  // ===== Footer page numbers + brand =====
   const total = doc.getNumberOfPages();
   for (let p = 1; p <= total; p++) {
     doc.setPage(p);
-    doc.setFontSize(9); doc.setTextColor(140);
+    doc.setFontSize(8.5); doc.setTextColor(130);
     doc.text(`Page ${p} of ${total}`, PAGE_W / 2, PAGE_H - 8, { align: "center" });
+    doc.text("Generated by ExamForge AI", PAGE_W - MARGIN, PAGE_H - 8, { align: "right" });
     doc.setTextColor(0);
   }
 
-  // Answer key
+  // ===== Answer key =====
   if (answerKey?.length) {
     doc.addPage(); y = MARGIN;
-    doc.setFont("helvetica", "bold"); doc.setFontSize(16);
-    doc.text("Answer Key", PAGE_W / 2, y, { align: "center" }); y += 8;
-    doc.setDrawColor(180); doc.line(MARGIN, y, PAGE_W - MARGIN, y); y += 6;
-    doc.setFont("helvetica", "normal"); doc.setFontSize(11);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(15);
+    doc.text("Answer Key", PAGE_W / 2, y, { align: "center" }); y += 6;
+    if (paper.subject) {
+      doc.setFont("helvetica", "normal"); doc.setFontSize(10);
+      doc.text(paper.subject + (paper.course ? `  |  ${paper.course}` : ""), PAGE_W / 2, y, { align: "center" });
+      y += 5;
+    }
+    y += 2;
+    doc.setDrawColor(60); doc.setLineWidth(0.4);
+    doc.line(MARGIN, y, PAGE_W - MARGIN, y);
+    y += 6;
+
+    doc.setFont("helvetica", "normal"); doc.setFontSize(10.5);
+    const numW = 12;
     for (const a of answerKey) {
-      const lines = wrapText(doc, `${a.number}. ${a.answer}`, PAGE_W - 2 * MARGIN);
-      y = checkPage(doc, y, lines.length * 5 + 2);
-      for (const l of lines) { y = checkPage(doc, y); doc.text(l, MARGIN, y); y += 5; }
+      const numStr = `${a.number}.`;
+      const cleaned = clean(a.answer).replace(/\s*\n\s*/g, "\n");
+      const paragraphs = cleaned.split("\n").filter(Boolean);
+      const lines: string[] = [];
+      paragraphs.forEach((p, pi) => {
+        lines.push(...wrap(doc, p, CONTENT_W - numW));
+        if (pi < paragraphs.length - 1) lines.push("");
+      });
+      const block = lines.length * 5 + 3;
+      y = ensureSpace(doc, y, block);
+      doc.setFont("helvetica", "bold"); doc.text(numStr, MARGIN, y);
+      doc.setFont("helvetica", "normal");
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i] !== "") doc.text(lines[i], MARGIN + numW, y);
+        y += 5;
+      }
       y += 2;
+    }
+
+    const totalAfter = doc.getNumberOfPages();
+    for (let p = total + 1; p <= totalAfter; p++) {
+      doc.setPage(p);
+      doc.setFontSize(8.5); doc.setTextColor(130);
+      doc.text(`Answer Key — Page ${p - total}`, PAGE_W / 2, PAGE_H - 8, { align: "center" });
+      doc.text("Generated by ExamForge AI", PAGE_W - MARGIN, PAGE_H - 8, { align: "right" });
+      doc.setTextColor(0);
     }
   }
 
