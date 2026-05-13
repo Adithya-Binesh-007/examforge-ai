@@ -72,32 +72,43 @@ export default function Generate() {
   });
 
   const handleUpload = (target: "syllabus" | "previous") => async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (file.size > 10 * 1024 * 1024) return toast.error("File must be under 10 MB");
+    const files = Array.from(e.target.files ?? []);
+    if (!files.length) return;
+    const oversized = files.find((f) => f.size > 10 * 1024 * 1024);
+    if (oversized) { e.target.value = ""; return toast.error(`"${oversized.name}" is over 10 MB`); }
     setOcrLoading(target);
-    if (target === "previous") setOcrFileName(file.name); else setSyllabusFileName(file.name);
-    try {
-      const base64 = await fileToBase64(file);
-      const { data, error } = await supabase.functions.invoke("extract-paper", {
-        body: { fileBase64: base64, mimeType: file.type },
-      });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-      const text = data?.text ?? "";
-      if (target === "syllabus") {
-        setSyllabus((cur) => cur ? `${cur}\n\n${text}` : text);
-      } else {
-        setPreviousPaper((cur) => cur ? `${cur}\n\n${text}` : text);
+    setOcrProgress({ current: 0, total: files.length });
+    let okCount = 0;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      setOcrProgress({ current: i + 1, total: files.length });
+      try {
+        const base64 = await fileToBase64(file);
+        const { data, error } = await supabase.functions.invoke("extract-paper", {
+          body: { fileBase64: base64, mimeType: file.type },
+        });
+        if (error) throw error;
+        if (data?.error) throw new Error(data.error);
+        const text = (data?.text ?? "").trim();
+        const labelled = files.length > 1
+          ? `\n\n----- ${target === "syllabus" ? "Syllabus" : "Previous Paper"} ${i + 1}: ${file.name} -----\n${text}`
+          : text;
+        if (target === "syllabus") {
+          setSyllabus((cur) => cur ? `${cur}${labelled}` : labelled.trimStart());
+          setSyllabusFileNames((cur) => [...cur, file.name]);
+        } else {
+          setPreviousPaper((cur) => cur ? `${cur}${labelled}` : labelled.trimStart());
+          setPreviousFileNames((cur) => [...cur, file.name]);
+        }
+        okCount++;
+      } catch (err: any) {
+        toast.error(`${file.name}: ${err.message || "extraction failed"}`);
       }
-      toast.success("Extracted text from your file");
-    } catch (err: any) {
-      toast.error(err.message || "Failed to extract file");
-      if (target === "previous") setOcrFileName(null); else setSyllabusFileName(null);
-    } finally {
-      setOcrLoading(null);
-      e.target.value = "";
     }
+    if (okCount) toast.success(`Extracted ${okCount} file${okCount > 1 ? "s" : ""}`);
+    setOcrLoading(null);
+    setOcrProgress(null);
+    e.target.value = "";
   };
 
   const validate = (): string | null => {
