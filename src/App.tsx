@@ -3,9 +3,10 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
-import { lazy, Suspense, ReactNode } from "react";
+import { lazy, Suspense, ReactNode, useState } from "react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import SplashLoader from "./components/SplashLoader";
 
 const Auth = lazy(() => import("./pages/Auth"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -21,8 +22,11 @@ function Protected({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
-const App = () => (
+const App = () => {
+  const [splashDone, setSplashDone] = useState(false);
+  return (
   <QueryClientProvider client={queryClient}>
+    {!splashDone && <SplashLoader onDone={() => setSplashDone(true)} />}
     <TooltipProvider>
       <Sonner position="top-right" theme="dark" richColors />
       <BrowserRouter>
@@ -41,6 +45,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;
