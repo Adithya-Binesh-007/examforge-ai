@@ -22,8 +22,11 @@ function Protected({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
-const App = () => (
+const App = () => {
+  const [splashDone, setSplashDone] = useState(false);
+  return (
   <QueryClientProvider client={queryClient}>
+    {!splashDone && <SplashLoader onDone={() => setSplashDone(true)} />}
     <TooltipProvider>
       <Sonner position="top-right" theme="dark" richColors />
       <BrowserRouter>
