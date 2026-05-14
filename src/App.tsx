@@ -3,9 +3,10 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
-import { lazy, Suspense, ReactNode } from "react";
+import { lazy, Suspense, ReactNode, useState } from "react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import SplashLoader from "./components/SplashLoader";
 
 const Auth = lazy(() => import("./pages/Auth"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
