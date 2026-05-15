@@ -157,8 +157,9 @@ export default function Generate() {
         .from("generated_papers")
         .insert({
           user_id: user.id,
-          title: paper.title || `${subject} ${examType}`,
-          subject, course: course || null,
+          title: paper.title || `${subject || paper.subject || "Question Paper"} ${examType}`,
+          subject: subject || paper.subject || "Auto",
+          course: course || paper.course || null,
           syllabus: syllabus || null,
           previous_paper_input: previousPaper || null,
           custom_prompt: customPrompt || null,
