@@ -112,12 +112,15 @@ export default function Generate() {
   };
 
   const validate = (): string | null => {
-    if (!subject.trim()) return "Subject is required";
+    if (mode === "prompt") {
+      if (!subject.trim()) return "Subject is required";
+      if (!customPrompt.trim()) return "Please enter a custom prompt";
+      if (qtypes.length === 0) return "Pick at least one question type";
+      return null;
+    }
     if (mode === "syllabus" && !syllabus.trim()) return "Please add your syllabus";
     if (mode === "previous" && !previousPaper.trim()) return "Please paste or upload a previous paper";
-    if (mode === "prompt" && !customPrompt.trim()) return "Please enter a custom prompt";
     if (mode === "syllabus_previous" && !syllabus.trim() && !previousPaper.trim()) return "Add a syllabus or previous paper";
-    if (qtypes.length === 0) return "Pick at least one question type";
     return null;
   };
 
