@@ -138,7 +138,9 @@ export default function Generate() {
     const stop = startStatusLoop();
     try {
       const payload = {
-        mode, subject, course, modules: modules ? Number(modules) : undefined,
+        mode,
+        subject: subject.trim() || "(infer from provided materials)",
+        course, modules: modules ? Number(modules) : undefined,
         examType, difficulty, questionTypes: qtypes,
         totalMarks: Number(totalMarks) || 100,
         numQuestions: Number(numQuestions) || 10,
