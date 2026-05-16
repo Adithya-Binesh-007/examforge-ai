@@ -1,0 +1,27 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f4ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e6ecff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="256" height="256" fill="url(#bgGradient)" rx="32"/>
+  
+  <!-- P Logo - Navy Blue -->
+  <g transform="translate(128, 128)">
+    <!-- Left vertical stroke of P -->
+    <rect x="-24" y="-60" width="20" height="120" fill="#001B4D" rx="10"/>
+    
+    <!-- Top horizontal stroke of P -->
+    <rect x="-24" y="-60" width="52" height="20" fill="#001B4D" rx="10"/>
+    
+    <!-- Right curved part of P (top) -->
+    <path d="M 28 -60 Q 52 -60 52 -30 Q 52 0 28 0 L -4 0" fill="#001B4D"/>
+    
+    <!-- Right curved part of P (bottom) -->
+    <path d="M 28 0 Q 52 0 52 30 Q 52 60 28 60 L -4 60" fill="#001B4D" opacity="0.15"/>
+  </g>
+</svg>
