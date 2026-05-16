@@ -1,8 +1,8 @@
-# ExamForge AI
+# Papryx AI
 
 🚀 AI-powered question paper generator for students and educators.
 
-ExamForge AI helps users generate professional question papers instantly using:
+Papryx AI helps users generate professional question papers instantly using:
 
 * Syllabus input
 * Previous question paper patterns
@@ -48,21 +48,16 @@ ExamForge AI helps users generate professional question papers instantly using:
 
 ## 🎯 Goal
 
-ExamForge AI aims to simplify exam preparation and question paper creation for students, teachers, and institutions using modern AI technology.
+Papryx AI aims to simplify exam preparation and question paper creation for students, teachers, and institutions using modern AI technology.
 
 ---
 
 ## 👨‍💻 Developer
 
 **Adithya Binesh**
-Student Developer & Founder of ExamForge AI
+Student Developer & Founder of Papryx AI
 
 🔗 LinkedIn:
 https://www.linkedin.com/in/adithya-binesh-631270388/
 
 ---
-
-## 🌐 Status
-
-🚧 Currently in development
-
