@@ -11,17 +11,11 @@
   <rect width="256" height="256" fill="url(#bgGradient)" rx="32"/>
   
   <!-- P Logo - Navy Blue -->
-  <g transform="translate(128, 128)">
-    <!-- Left vertical stroke of P -->
-    <rect x="-24" y="-60" width="20" height="120" fill="#001B4D" rx="10"/>
+  <g transform="translate(64, 64)">
+    <!-- Vertical stem of P -->
+    <rect x="0" y="0" width="24" height="128" fill="#001B4D" rx="12"/>
     
-    <!-- Top horizontal stroke of P -->
-    <rect x="-24" y="-60" width="52" height="20" fill="#001B4D" rx="10"/>
-    
-    <!-- Right curved part of P (top) -->
-    <path d="M 28 -60 Q 52 -60 52 -30 Q 52 0 28 0 L -4 0" fill="#001B4D"/>
-    
-    <!-- Right curved part of P (bottom) -->
-    <path d="M 28 0 Q 52 0 52 30 Q 52 60 28 60 L -4 60" fill="#001B4D" opacity="0.15"/>
+    <!-- Top bowl of P -->
+    <path d="M 24 12 Q 72 12 72 56 Q 72 100 24 100 L 24 12" fill="#001B4D"/>
   </g>
 </svg>
