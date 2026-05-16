@@ -5,7 +5,7 @@ export const Footer = () => (
     <div className="container py-10 flex flex-col md:flex-row items-center justify-between gap-4">
       <Logo />
       <p className="text-sm text-muted-foreground">
-        © {new Date().getFullYear()} ExamForge AI. From syllabus to question paper in seconds.
+        © {new Date().getFullYear()} Papryx AI. From syllabus to question paper in seconds.
       </p>
     </div>
   </footer>
