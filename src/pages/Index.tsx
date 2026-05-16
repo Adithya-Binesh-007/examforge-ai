@@ -255,7 +255,7 @@ export default function Index() {
         <div className="container">
           <Reveal className="text-center max-w-2xl mx-auto mb-12 sm:mb-14">
             <h2 className="font-display text-3xl sm:text-5xl font-bold mb-4">
-              Why choose <span className="gradient-text">ExamForge AI</span>
+              Why choose <span className="gradient-text">Papryx AI</span>
             </h2>
           </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
