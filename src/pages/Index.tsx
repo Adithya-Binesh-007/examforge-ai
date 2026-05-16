@@ -41,7 +41,7 @@ const benefits = [
 
 const faqs = [
   { q: "Do I need to provide a syllabus?", a: "No. Syllabus is optional. You can also use a previous question paper, a custom prompt, or any combination." },
-  { q: "Will the AI copy questions from the paper I upload?", a: "Never. ExamForge AI analyzes the structure, marks distribution, and style — then writes brand-new original questions." },
+  { q: "Will the AI copy questions from the paper I upload?", a: "Never. Papryx AI analyzes the structure, marks distribution, and style — then writes brand-new original questions." },
   { q: "Can I download the paper as a PDF?", a: "Yes. Every generated paper can be downloaded as a clean, exam-ready PDF including a separate answer key." },
   { q: "Is my data private?", a: "Yes. Authentication and per-user data isolation ensure only you can access your papers." },
   { q: "Which exam types are supported?", a: "Internal, Model, Final, and Custom Pattern exams across any subject or course." },
@@ -106,7 +106,7 @@ export default function Index() {
 
             <p className="text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 text-balance min-h-[3.5rem] sm:min-h-[3rem]">
               <TypewriterText
-                text="ExamForge AI is the smartest way to create professional, exam-ready question papers — powered by AI, designed for students and educators."
+                text="Papryx AI is the smartest way to create professional, exam-ready question papers — powered by AI, designed for students and educators."
                 speed={14}
                 startDelay={2200}
                 cursor={false}
@@ -306,7 +306,7 @@ export default function Index() {
                 <div className="flex-1">
                   <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">About the Developer</p>
                   <h3 className="font-display text-2xl md:text-3xl font-bold mb-1">Adithya Binesh</h3>
-                  <p className="text-sm gradient-text font-medium mb-3">Student Developer & Founder of ExamForge AI</p>
+                  <p className="text-sm gradient-text font-medium mb-3">Student Developer & Founder of Papryx AI</p>
                   <p className="text-muted-foreground max-w-2xl">
                     Adithya Binesh is a student developer passionate about building AI-powered tools that help students and educators save time, prepare better, and create smarter learning resources.
                   </p>
@@ -332,7 +332,7 @@ export default function Index() {
                 <h2 className="font-display text-3xl sm:text-5xl font-bold mb-4">
                   Ready to forge your <span className="glow-title">first paper</span>?
                 </h2>
-                <p className="text-muted-foreground mb-8 max-w-xl mx-auto">Join students and educators using ExamForge AI to create smarter exams.</p>
+                <p className="text-muted-foreground mb-8 max-w-xl mx-auto">Join students and educators using Papryx AI to create smarter exams.</p>
                 <Button asChild size="lg" className="btn-gradient animate-btn-glow text-white border-0 h-12 px-8">
                   <Link to="/auth?mode=signup">Start Generating <ArrowRight className="ml-2 h-5 w-5" /></Link>
                 </Button>
