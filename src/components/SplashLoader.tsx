@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import logoMark from "@/assets/logo-mark.svg";
+import logoMark from "@/assets/logo-mark.png.asset.json";
 
 export const SplashLoader = ({ onDone }: { onDone?: () => void }) => {
   const [leaving, setLeaving] = useState(false);
@@ -24,7 +24,7 @@ export const SplashLoader = ({ onDone }: { onDone?: () => void }) => {
 
         {/* Logo breathing in/out */}
         <img
-          src={logoMark}
+          src={logoMark.url}
           alt="Papryx AI"
           className="relative h-20 w-20 rounded-2xl object-contain bg-white shadow-[0_0_40px_hsl(var(--primary)/0.5)] splash-logo"
         />

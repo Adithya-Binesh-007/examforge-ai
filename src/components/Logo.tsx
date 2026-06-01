@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import logoMark from "@/assets/logo-mark.svg";
+import logoMark from "@/assets/logo-mark.png.asset.json";
 
 export const Logo = ({ to = "/" }: { to?: string }) => (
   <Link to={to} className="flex items-center gap-2 group">
     <div className="relative">
       <div className="absolute inset-0 bg-gradient-primary blur-md opacity-50 group-hover:opacity-80 transition-opacity rounded-lg" />
       <img
-        src={logoMark}
+        src={logoMark.url}
         alt="Papryx AI logo"
         className="relative h-9 w-9 rounded-lg object-contain bg-white"
       />
