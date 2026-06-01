@@ -73,7 +73,7 @@ export function TypewriterText({
         initial={{ opacity: 0, y: 6, filter: "blur(6px)" }}
         animate={shouldType ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
         transition={{ duration: 0.45, ease: "easeOut" }}
-        className="absolute inset-0 whitespace-pre-wrap"
+        className={cn("absolute inset-0 whitespace-pre-wrap", className)}
       >
         {text.slice(0, count)}
         {cursor && (!done || keepCursor) && (
